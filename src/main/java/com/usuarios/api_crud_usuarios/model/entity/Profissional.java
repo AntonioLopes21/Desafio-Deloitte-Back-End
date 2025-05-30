@@ -33,4 +33,4 @@ public class Profissional {
     @NotBlank
     private EspecialidadeProfissional especialidadeProfissional;
 
-}
+
