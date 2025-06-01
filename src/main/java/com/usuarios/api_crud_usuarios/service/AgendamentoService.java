@@ -1,6 +1,7 @@
 package com.usuarios.api_crud_usuarios.service;
 
 import com.usuarios.api_crud_usuarios.enums.StatusAgendamento;
+import com.usuarios.api_crud_usuarios.exceptions.NotFoundItemException;
 import com.usuarios.api_crud_usuarios.model.dto.AgendamentoDTO;
 import com.usuarios.api_crud_usuarios.model.entity.Agendamento;
 import com.usuarios.api_crud_usuarios.model.entity.Servico;
@@ -9,10 +10,11 @@ import com.usuarios.api_crud_usuarios.repository.AgendamentoRepository;
 import com.usuarios.api_crud_usuarios.repository.ServicoRepository;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,15 +30,21 @@ public class AgendamentoService {
     private ServicoRepository servicoRepository;
 
     public AgendamentoDTO criarAgendamento(AgendamentoDTO dto) {
-        Usuario cliente = usuarioRepository.findById(dto.getClienteId()).orElseThrow();
-        Usuario profissional = usuarioRepository.findById(dto.getProfissionalId()).orElseThrow();
-        Servico servico = servicoRepository.findById(dto.getServicoId()).orElseThrow();
+        Usuario cliente = usuarioRepository.findById(dto.getClienteId())
+                .orElseThrow(() -> new NotFoundItemException(dto.getClienteId()));
 
-        boolean conflito = agendamentoRepository.existsByProfissionalIdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
-                dto.getProfissionalId(), dto.getDataHoraFim(), dto.getDataHoraInicio());
+        Usuario profissional = usuarioRepository.findById(dto.getProfissionalId())
+                .orElseThrow(() -> new NotFoundItemException(dto.getProfissionalId()));
+
+        Servico servico = servicoRepository.findById(dto.getServicoId())
+                .orElseThrow(() -> new NotFoundItemException(dto.getServicoId()));
+
+        boolean conflito = agendamentoRepository
+                .existsByProfissionalIdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
+                        dto.getProfissionalId(), dto.getDataHoraFim(), dto.getDataHoraInicio());
 
         if (conflito) {
-            throw new RuntimeException("Horário já ocupado para o profissional.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Horário já ocupado para o profissional.");
         }
 
         Agendamento agendamento = new Agendamento();
@@ -61,13 +69,15 @@ public class AgendamentoService {
     }
 
     public void cancelarAgendamento(Long id, StatusAgendamento motivoCancelamento) {
-        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow();
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundItemException(id));
         agendamento.setStatus(motivoCancelamento);
         agendamentoRepository.save(agendamento);
     }
 
     public void concluirAgendamento(Long id) {
-        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow();
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundItemException(id));
         agendamento.setStatus(StatusAgendamento.CONCLUIDO);
         agendamentoRepository.save(agendamento);
     }

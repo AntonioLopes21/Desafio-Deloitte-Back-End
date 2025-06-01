@@ -18,7 +18,6 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Usuario cliente;
@@ -36,7 +35,4 @@ public class Agendamento {
 
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status = StatusAgendamento.AGENDADO;
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private StatusAgendamento statusDoAgendamento;
 }
