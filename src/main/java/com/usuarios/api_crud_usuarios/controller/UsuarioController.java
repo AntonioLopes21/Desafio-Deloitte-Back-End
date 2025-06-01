@@ -2,6 +2,7 @@ package com.usuarios.api_crud_usuarios.controller;
 
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
 import com.usuarios.api_crud_usuarios.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> listar() {
