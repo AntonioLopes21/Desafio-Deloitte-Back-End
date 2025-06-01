@@ -26,5 +26,5 @@ public class AgendamentoDTO {
         this.dataHoraInicio = agendamento.getDataHoraInicio();
         this.dataHoraFim = agendamento.getDataHoraFim();
         this.status = agendamento.getStatus();
-    }
+
 }

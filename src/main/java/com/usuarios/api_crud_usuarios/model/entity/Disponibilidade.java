@@ -4,6 +4,7 @@ import com.usuarios.api_crud_usuarios.enums.DiaDaSemana;
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Disponibilidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
