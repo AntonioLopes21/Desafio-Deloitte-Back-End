@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,11 @@ public class AgendamentoService {
         return agendamentoRepository.findByProfissionalId(profissionalId)
                 .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
     }
+    public List<AgendamentoDTO> listarAgendaPorPeriodo(Long profissionalId, LocalDateTime inicio, LocalDateTime fim) {
+        return agendamentoRepository.findByIdProfissionalIdAndDataHoraInicioBetween(profissionalId,inicio,fim)
+                .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
+    }
+
 
     public void cancelarAgendamento(Long id, StatusAgendamento motivoCancelamento) {
         Agendamento agendamento = agendamentoRepository.findById(id)
