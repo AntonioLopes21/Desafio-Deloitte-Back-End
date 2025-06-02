@@ -31,8 +31,20 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/usuarios").hasRole("PROFISSIONAL")
-                        .requestMatchers(HttpMethod.POST, "/usuarios").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+                        //Usuarios - criação a edição (implementar adm?)
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+                        //Agendamentos
+                        .requestMatchers(HttpMethod.GET, "/agendamentos/cliente/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/agendamentos/profissional/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/agendamentos/**/cancelar").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/agendamentos/**/concluir").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

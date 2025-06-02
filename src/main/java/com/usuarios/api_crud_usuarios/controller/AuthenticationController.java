@@ -24,10 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
 
-    @Autowired
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
     private final TokenService tokenService;
 
     private final UsuarioRepository usuarioRepository;
@@ -35,7 +33,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto) {
 
-        //criptografando a senha
+        //Autenticando senha
         var userPassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
         var authentication = this.authenticationManager.authenticate(userPassword);
 
