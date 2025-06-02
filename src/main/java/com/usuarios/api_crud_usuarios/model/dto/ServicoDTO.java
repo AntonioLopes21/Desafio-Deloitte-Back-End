@@ -33,9 +33,10 @@ public class ServicoDTO {
         servico.setNome(servicoDTO.getNome());
         servico.setDuracaoEmMinutos(servicoDTO.getDuracaoEmMinutos());
         servico.setProfissional(servicoDTO.getProfissional());
-
         return servico;
     }
+
+
 
 }
 
