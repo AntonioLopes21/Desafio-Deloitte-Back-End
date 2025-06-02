@@ -1,6 +1,8 @@
 package com.usuarios.api_crud_usuarios.controller;
 
+import com.usuarios.api_crud_usuarios.infra.security.TokenService;
 import com.usuarios.api_crud_usuarios.model.dto.AuthenticationDTO;
+import com.usuarios.api_crud_usuarios.model.dto.LoginResponseDTO;
 import com.usuarios.api_crud_usuarios.model.dto.RegisterDTO;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
@@ -25,15 +27,21 @@ public class AuthenticationController {
     @Autowired
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
+    private final TokenService tokenService;
+
     private final UsuarioRepository usuarioRepository;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto) {
+
         //criptografando a senha
         var userPassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
         var authentication = this.authenticationManager.authenticate(userPassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Usuario) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
