@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/auth/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
@@ -32,6 +32,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> criar(@RequestBody UsuarioDTO dto) {
+
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.criarUsuario(dto));
     }
 

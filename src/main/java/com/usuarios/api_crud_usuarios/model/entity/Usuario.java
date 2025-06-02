@@ -22,18 +22,20 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String nome;
     private String email;
     private String senha;
+    private TipoUsuario role;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
-    public Usuario(String email, String senha, TipoUsuario tipoUsuario) {
+    public Usuario(Long id,String nome, String email, String senha, TipoUsuario role) {
+        this.id = id;
+        this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.tipoUsuario = tipoUsuario;
+        this.tipoUsuario = role;
     }
 
     @Override

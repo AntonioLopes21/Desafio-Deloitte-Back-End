@@ -48,7 +48,7 @@ public class AuthenticationController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(dto.senha());
         //construtor da classe usuario personalizado
-        Usuario novoUsuario = new Usuario(dto.email(), encryptedPassword, dto.role());
+        Usuario novoUsuario = new Usuario(dto.id(), dto.nome(), dto.email(), encryptedPassword, dto.tipoUsuario());
 
         this.usuarioRepository.save(novoUsuario);
 

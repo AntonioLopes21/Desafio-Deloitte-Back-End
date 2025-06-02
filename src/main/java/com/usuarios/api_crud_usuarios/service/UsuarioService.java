@@ -1,20 +1,21 @@
 package com.usuarios.api_crud_usuarios.service;
 
-import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.exceptions.NotFoundItemException;
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
+    private final PasswordEncoder passwordEncoder;
+
 
     private final UsuarioRepository usuarioRepository;
 
@@ -36,6 +37,7 @@ public class UsuarioService {
     //POST
     public UsuarioDTO criarUsuario(UsuarioDTO usuarioDTO) {
         Usuario novoUser = UsuarioDTO.toEntity(usuarioDTO);
+        novoUser.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
         Usuario usuarioSalvo = usuarioRepository.save(novoUser);
         return UsuarioDTO.toDTO(usuarioSalvo);
     }
@@ -49,15 +51,13 @@ public class UsuarioService {
 
             usuario.setNome(dto.getNome());
             usuario.setEmail(dto.getEmail());
-            usuario.setSenha(dto.getSenha());
+            usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
             usuario.setTipoUsuario(dto.getTipoUsuario());
 
             usuarioRepository.save(usuario);
 
             return UsuarioDTO.toDTO(usuario);
-        } else {
-            return null;
-        }
+        } else throw new NotFoundItemException(id);
     }
 
 

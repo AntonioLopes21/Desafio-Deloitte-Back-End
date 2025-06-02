@@ -31,19 +31,34 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Usuarios - criação a edição (implementar adm?)
-                        .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Agendamentos
-                        .requestMatchers(HttpMethod.GET, "/agendamentos/cliente/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/agendamentos/profissional/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/agendamentos/**/cancelar").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/agendamentos/**/concluir").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/cliente/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/profissional/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**/cancelar").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**/concluir").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+                        //serviços
+                        .requestMatchers(HttpMethod.GET, "/auth/servicos").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/servicos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/auth/servicos").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/servicos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/auth/servicos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+
+                        //Disponibilidades
+                        .requestMatchers(HttpMethod.GET, "/auth/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/auth/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/auth/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         .anyRequest().authenticated()
                 )

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/disponibilidades")
+@RequestMapping("/auth/disponibilidades")
 @RequiredArgsConstructor
 public class DisponibilidadeController {
 
