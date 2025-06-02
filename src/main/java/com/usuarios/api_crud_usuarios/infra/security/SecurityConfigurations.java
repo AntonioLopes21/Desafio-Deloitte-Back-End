@@ -39,6 +39,12 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
                         .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
+                        //disponibilidades
+                        .requestMatchers(HttpMethod.GET, "/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
                         //Agendamentos
                         .requestMatchers(HttpMethod.GET, "/agendamentos/cliente/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
                         .requestMatchers(HttpMethod.GET, "/agendamentos/profissional/**").hasAnyRole("PROFISSIONAL", "CLIENTE")

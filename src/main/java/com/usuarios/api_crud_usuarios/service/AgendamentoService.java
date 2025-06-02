@@ -11,6 +11,7 @@ import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class AgendamentoService {
         Usuario profissional = usuarioRepository.findById(dto.getProfissionalId()).orElseThrow();
         Servico servico = servicoRepository.findById(dto.getServicoId()).orElseThrow();
 
-        boolean conflito = agendamentoRepository.existsByProfissionalIdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
+        boolean conflito = agendamentoRepository.existsByProfissional_IdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
                 dto.getProfissionalId(), dto.getDataHoraFim(), dto.getDataHoraInicio());
 
         if (conflito) {
@@ -51,12 +52,16 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> listarPorCliente(Long clienteId) {
-        return agendamentoRepository.findByClienteId(clienteId)
+        return agendamentoRepository.findByCliente_Id(clienteId)
                 .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
     }
 
     public List<AgendamentoDTO> listarPorProfissional(Long profissionalId) {
-        return agendamentoRepository.findByProfissionalId(profissionalId)
+        return agendamentoRepository.findByProfissional_Id(profissionalId)
+                .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
+    }
+    public List<AgendamentoDTO> listarAgendaPorPeriodo(Long profissionalId,LocalDateTime inicio, LocalDateTime fim) {
+        return agendamentoRepository.findByProfissional_IdAndDataHoraInicioBetween(profissionalId,inicio,fim)
                 .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
     }
 
