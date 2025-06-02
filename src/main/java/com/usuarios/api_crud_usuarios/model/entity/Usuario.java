@@ -30,11 +30,27 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
-    public Usuario(String email, String senha, TipoUsuario tipoUsuario) {
+    public Usuario(Long id, String email, String senha, TipoUsuario tipoUsuario) {
+        this.id = id;
         this.email = email;
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
     }
+
+    public Usuario(Long id, String nome, String email, String encryptedPassword, TipoUsuario role) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = encryptedPassword;
+        this.tipoUsuario = role;
+    }
+
+    public Usuario(String email, String encryptedPassword, TipoUsuario role) {
+        this.email = email;
+        this.senha = encryptedPassword;
+        this.tipoUsuario = role;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
