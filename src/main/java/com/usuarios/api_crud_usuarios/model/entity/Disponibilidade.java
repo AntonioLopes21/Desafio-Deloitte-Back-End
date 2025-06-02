@@ -11,9 +11,9 @@ import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
+@RequiredArgsConstructor
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Disponibilidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

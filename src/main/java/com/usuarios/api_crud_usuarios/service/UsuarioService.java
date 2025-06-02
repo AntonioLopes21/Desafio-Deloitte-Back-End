@@ -1,5 +1,6 @@
 package com.usuarios.api_crud_usuarios.service;
 
+import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.exceptions.NotFoundItemException;
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
@@ -7,6 +8,7 @@ import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +16,7 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     //GET
     public List<UsuarioDTO> listarUsuarios() {

@@ -36,7 +36,4 @@ public class Agendamento {
 
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status = StatusAgendamento.AGENDADO;
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private StatusAgendamento statusDoAgendamento;
 }
