@@ -33,6 +33,7 @@ public class UsuarioDTO {
 
     public static Usuario toEntity(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
+        usuario.setId(usuarioDTO.getId());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setSenha(usuarioDTO.getSenha());
@@ -42,6 +43,7 @@ public class UsuarioDTO {
 
     public static UsuarioDTO toDTO(Usuario usuario) {
         UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
         dto.setSenha(usuario.getSenha());
