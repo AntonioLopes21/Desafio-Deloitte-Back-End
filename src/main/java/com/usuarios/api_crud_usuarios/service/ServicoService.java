@@ -64,10 +64,10 @@ public class ServicoService {
 
         validarSeProfissional(servico.getProfissional());
 
-        servico.setNome(servico.getNome());
-        servico.setDescricao(servico.getDescricao());
-        servico.setDuracaoEmMinutos(servico.getDuracaoEmMinutos());
-        servico.setProfissional(servico.getProfissional());
+        servico.setNome(servicoDTO.getNome());
+        servico.setDescricao(servicoDTO.getDescricao());
+        servico.setDuracaoEmMinutos(servicoDTO.getDuracaoEmMinutos());
+        servico.setProfissional(servicoDTO.getProfissional());
         Servico servicoSalvo = servicoRepository.save(servico);
         return new ServicoDTO(servicoSalvo);
     }
