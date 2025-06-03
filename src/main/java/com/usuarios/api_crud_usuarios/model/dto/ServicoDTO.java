@@ -30,6 +30,8 @@ public class ServicoDTO {
         Usuario usuario = new Usuario();
         usuario.setId(servicoDTO.getProfissional().getId());
 
+        servico.setId(servicoDTO.getId());
+        servico.setDescricao(servicoDTO.getDescricao());
         servico.setNome(servicoDTO.getNome());
         servico.setDuracaoEmMinutos(servicoDTO.getDuracaoEmMinutos());
         servico.setProfissional(servicoDTO.getProfissional());

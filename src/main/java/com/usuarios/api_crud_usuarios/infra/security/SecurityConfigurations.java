@@ -40,10 +40,10 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.DELETE, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Agendamentos
-                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/cliente/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/profissional/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**/cancelar").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**/concluir").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/cliente/**").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/profissional/**").hasRole("PROFISSIONAL")
+                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //serviços
                         .requestMatchers(HttpMethod.GET, "/auth/servicos").hasAnyRole("PROFISSIONAL", "CLIENTE")

@@ -28,12 +28,12 @@ public class AgendamentoService {
     private ServicoRepository servicoRepository;
 
     public AgendamentoDTO criarAgendamento(AgendamentoDTO dto) {
-        Usuario cliente = usuarioRepository.findById(dto.getClienteId()).orElseThrow();
-        Usuario profissional = usuarioRepository.findById(dto.getProfissionalId()).orElseThrow();
-        Servico servico = servicoRepository.findById(dto.getServicoId()).orElseThrow();
+        Usuario cliente = usuarioRepository.findById(dto.getCliente()).orElseThrow();
+        Usuario profissional = usuarioRepository.findById(dto.getProfissional()).orElseThrow();
+        Servico servico = servicoRepository.findById(dto.getServico()).orElseThrow();
 
-        boolean conflito = agendamentoRepository.existsByProfissionalIdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
-                dto.getProfissionalId(), dto.getDataHoraFim(), dto.getDataHoraInicio());
+        boolean conflito = agendamentoRepository.existsByProfissional_IdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
+                dto.getProfissional(), dto.getDataHoraFim(), dto.getDataHoraInicio());
 
         if (conflito) {
             throw new RuntimeException("Horário já ocupado para o profissional.");
@@ -51,12 +51,12 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> listarPorCliente(Long clienteId) {
-        return agendamentoRepository.findByClienteId(clienteId)
+        return agendamentoRepository.findByCliente_Id(clienteId)
                 .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
     }
 
     public List<AgendamentoDTO> listarPorProfissional(Long profissionalId) {
-        return agendamentoRepository.findByProfissionalId(profissionalId)
+        return agendamentoRepository.findByProfissional_Id(profissionalId)
                 .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
     }
 

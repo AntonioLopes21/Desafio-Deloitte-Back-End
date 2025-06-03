@@ -1,5 +1,6 @@
 package com.usuarios.api_crud_usuarios.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,6 @@ public class Servico {
 
     @ManyToOne
     @JoinColumn(name = "profissional_id", nullable = false)
+    @JsonProperty("profissional")
     private Usuario profissional;
 }
