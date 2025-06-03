@@ -2,6 +2,7 @@ package com.usuarios.api_crud_usuarios.model.dto;
 
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
+import com.usuarios.api_crud_usuarios.repository.ServicoRepository;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +29,11 @@ public class UsuarioDTO {
 
     }
 
-    public UsuarioDTO(UsuarioRepository usuarioRepository) {
-    }
-
     public static Usuario toEntity(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setId(usuarioDTO.getId());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setSenha(usuarioDTO.getSenha());
         usuario.setTipoUsuario(usuarioDTO.getTipoUsuario());
         return usuario;
     }
@@ -46,7 +43,6 @@ public class UsuarioDTO {
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
-        dto.setSenha(usuario.getSenha());
         dto.setTipoUsuario(usuario.getTipoUsuario());
 
         return dto;
