@@ -1,5 +1,6 @@
 package com.usuarios.api_crud_usuarios.infra.security;
 
+import com.usuarios.api_crud_usuarios.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,13 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
+                        //rotas do swagger
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Usuarios - criação a edição (implementar adm?)
@@ -42,12 +50,6 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
                         .requestMatchers(HttpMethod.PUT, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
                         .requestMatchers(HttpMethod.DELETE, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-
-                        //disponibilidades
-                        .requestMatchers(HttpMethod.GET, "/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Agendamentos
                         .requestMatchers(HttpMethod.GET, "/auth/agendamentos/cliente/**").hasRole("CLIENTE")

@@ -1,5 +1,6 @@
 package com.usuarios.api_crud_usuarios.service;
 
+import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.exceptions.NotFoundItemException;
 import com.usuarios.api_crud_usuarios.model.dto.ProfissionaisEServicosDisponiveisDTO;
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
@@ -49,10 +50,10 @@ public class UsuarioService {
                 }).toList();
     }
     //GET PROFISSIONAIS
-    //public List<Usuario> listarProfissionais() {
-        //return usuarioRepository.findByTipoUsuario(TipoUsuario.ROLE_PROFISSIONAL);
+    public List<Usuario> listarProfissionais() {
+        return usuarioRepository.findByTipoUsuario(TipoUsuario.ROLE_PROFISSIONAL);
 
-    //}
+    }
 
     //GET SERVICOS
     public List<Servico> listarServicos() {
