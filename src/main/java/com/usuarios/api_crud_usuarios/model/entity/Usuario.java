@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,7 +26,10 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank (message = "O nome não pode ser vazio.")
     private String nome;
+    @Email (message = "email inválido")
+    @NotBlank (message = "O email não pode ser vazio.")
     private String email;
     @JsonIgnore
     private String senha;
