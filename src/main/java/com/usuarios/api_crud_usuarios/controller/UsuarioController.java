@@ -4,6 +4,7 @@ import com.usuarios.api_crud_usuarios.model.dto.ProfissionaisEServicosDisponivei
 import com.usuarios.api_crud_usuarios.model.dto.ServicoDTO;
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
 import com.usuarios.api_crud_usuarios.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,13 +77,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> criar(@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioDTO dto) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.criarUsuario(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> editar(@PathVariable Long id,@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> editar(@PathVariable Long id,@RequestBody @Valid UsuarioDTO dto) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.editarUsuario(id, dto));
     }
 
