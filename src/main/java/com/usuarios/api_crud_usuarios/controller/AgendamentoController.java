@@ -15,11 +15,6 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoService service;
 
-    @PostMapping
-    public AgendamentoDTO criar(@RequestBody AgendamentoDTO dto) {
-        return service.criarAgendamento(dto);
-    }
-
     @GetMapping("/cliente/{clienteId}")
     public List<AgendamentoDTO> listarPorCliente(@PathVariable Long clienteId) {
         return service.listarPorCliente(clienteId);
@@ -29,6 +24,13 @@ public class AgendamentoController {
     public List<AgendamentoDTO> listarPorProfissional(@PathVariable Long profissionalId) {
         return service.listarPorProfissional(profissionalId);
     }
+
+    @PostMapping
+    public AgendamentoDTO criar(@RequestBody AgendamentoDTO dto) {
+        return service.criarAgendamento(dto);
+    }
+
+
 
     @PutMapping("/{id}/cancelar")
     public void cancelar(@PathVariable Long id, @RequestParam StatusAgendamento motivo) {
