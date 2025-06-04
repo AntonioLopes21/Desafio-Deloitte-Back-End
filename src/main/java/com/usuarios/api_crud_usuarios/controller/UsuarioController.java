@@ -43,7 +43,7 @@ public class UsuarioController {
                     dto.setNome(servico.getNome());
                     dto.setDescricao(servico.getDescricao());
                     dto.setDuracaoEmMinutos(servico.getDuracaoEmMinutos());
-
+                    dto.setProfissional(servico.getProfissional());
                     return dto;
                 }).toList();
 

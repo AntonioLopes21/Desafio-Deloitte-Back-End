@@ -1,5 +1,6 @@
 package com.usuarios.api_crud_usuarios.infra.security;
 
+import com.usuarios.api_crud_usuarios.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations {
 
     private final SecurityFilter securityFilter;
+    private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Bean
