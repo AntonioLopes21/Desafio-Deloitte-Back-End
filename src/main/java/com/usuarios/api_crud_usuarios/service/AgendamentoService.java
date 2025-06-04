@@ -1,6 +1,7 @@
 package com.usuarios.api_crud_usuarios.service;
 
 import com.usuarios.api_crud_usuarios.enums.StatusAgendamento;
+import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.model.dto.AgendamentoDTO;
 import com.usuarios.api_crud_usuarios.model.entity.Agendamento;
 import com.usuarios.api_crud_usuarios.model.entity.Servico;

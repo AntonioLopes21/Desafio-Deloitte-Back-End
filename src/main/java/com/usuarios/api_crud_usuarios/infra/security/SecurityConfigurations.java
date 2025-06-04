@@ -35,6 +35,9 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Usuarios - criação a edição (implementar adm?)
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarServicos").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarProfissionais").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarServicosEProfissionais").hasRole("CLIENTE")
                         .requestMatchers(HttpMethod.GET, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
                         .requestMatchers(HttpMethod.GET, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
                         .requestMatchers(HttpMethod.PUT, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
