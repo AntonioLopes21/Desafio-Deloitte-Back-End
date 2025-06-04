@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @RequiredArgsConstructor
@@ -23,8 +24,9 @@ public class Disponibilidade {
     @JoinColumn(name= "profissional_id", nullable = false)
     private Usuario profissional;
 
+    @ElementCollection(targetClass = DiaDaSemana.class)
     @Enumerated(EnumType.STRING)
-    private DiaDaSemana diaDaSemana;
+    private List<DiaDaSemana> diaDaSemana;
 
     private LocalTime horaInicio;
     private LocalTime horaFim;

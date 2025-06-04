@@ -1,7 +1,10 @@
 package com.usuarios.api_crud_usuarios.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
+import com.usuarios.api_crud_usuarios.repository.ServicoRepository;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,8 @@ public class UsuarioDTO {
     private Long id;
     private String nome;
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
     private TipoUsuario tipoUsuario;
 
@@ -23,12 +28,8 @@ public class UsuarioDTO {
         this.setId(usuario.getId());
         this.setNome(usuario.getNome());
         this.setEmail(usuario.getEmail());
-        this.setSenha(usuario.getSenha());
         this.setTipoUsuario(usuario.getTipoUsuario());
 
-    }
-
-    public UsuarioDTO(UsuarioRepository usuarioRepository) {
     }
 
     public static Usuario toEntity(UsuarioDTO usuarioDTO) {
@@ -36,7 +37,6 @@ public class UsuarioDTO {
         usuario.setId(usuarioDTO.getId());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setSenha(usuarioDTO.getSenha());
         usuario.setTipoUsuario(usuarioDTO.getTipoUsuario());
         return usuario;
     }
@@ -46,7 +46,6 @@ public class UsuarioDTO {
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
-        dto.setSenha(usuario.getSenha());
         dto.setTipoUsuario(usuario.getTipoUsuario());
 
         return dto;

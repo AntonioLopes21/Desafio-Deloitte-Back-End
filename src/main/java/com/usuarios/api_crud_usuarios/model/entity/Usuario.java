@@ -1,5 +1,7 @@
 package com.usuarios.api_crud_usuarios.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,41 +18,27 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties({"password", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked", "authorities", "username"})
 public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     private String nome;
     private String email;
+    @JsonIgnore
     private String senha;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
-    public Usuario(Long id, String email, String senha, TipoUsuario tipoUsuario) {
-        this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.tipoUsuario = tipoUsuario;
-    }
-
-    public Usuario(Long id, String nome, String email, String encryptedPassword, TipoUsuario role) {
+    public Usuario(Long id,String nome, String email, String senha, TipoUsuario role) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.senha = encryptedPassword;
+        this.senha = senha;
         this.tipoUsuario = role;
     }
-
-    public Usuario(String email, String encryptedPassword, TipoUsuario role) {
-        this.email = email;
-        this.senha = encryptedPassword;
-        this.tipoUsuario = role;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

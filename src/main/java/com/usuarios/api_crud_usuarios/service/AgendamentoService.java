@@ -11,9 +11,7 @@ import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,12 +27,12 @@ public class AgendamentoService {
     private ServicoRepository servicoRepository;
 
     public AgendamentoDTO criarAgendamento(AgendamentoDTO dto) {
-        Usuario cliente = usuarioRepository.findById(dto.getClienteId()).orElseThrow();
-        Usuario profissional = usuarioRepository.findById(dto.getProfissionalId()).orElseThrow();
-        Servico servico = servicoRepository.findById(dto.getServicoId()).orElseThrow();
+        Usuario cliente = usuarioRepository.findById(dto.getCliente()).orElseThrow();
+        Usuario profissional = usuarioRepository.findById(dto.getProfissional()).orElseThrow();
+        Servico servico = servicoRepository.findById(dto.getServico()).orElseThrow();
 
         boolean conflito = agendamentoRepository.existsByProfissional_IdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
-                dto.getProfissionalId(), dto.getDataHoraFim(), dto.getDataHoraInicio());
+                dto.getProfissional(), dto.getDataHoraFim(), dto.getDataHoraInicio());
 
         if (conflito) {
             throw new RuntimeException("Horário já ocupado para o profissional.");
@@ -60,10 +58,6 @@ public class AgendamentoService {
         return agendamentoRepository.findByProfissional_Id(profissionalId)
                 .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
     }
-    public List<AgendamentoDTO> listarAgendaPorPeriodo(Long profissionalId,LocalDateTime inicio, LocalDateTime fim) {
-        return agendamentoRepository.findByProfissional_IdAndDataHoraInicioBetween(profissionalId,inicio,fim)
-                .stream().map(AgendamentoDTO::new).collect(Collectors.toList());
-    }
 
     public void cancelarAgendamento(Long id, StatusAgendamento motivoCancelamento) {
         Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow();
@@ -76,4 +70,5 @@ public class AgendamentoService {
         agendamento.setStatus(StatusAgendamento.CONCLUIDO);
         agendamentoRepository.save(agendamento);
     }
+
 }

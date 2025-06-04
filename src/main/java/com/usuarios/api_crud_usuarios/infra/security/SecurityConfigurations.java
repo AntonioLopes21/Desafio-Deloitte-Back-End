@@ -1,5 +1,6 @@
 package com.usuarios.api_crud_usuarios.infra.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    @Autowired
-    SecurityFilter securityFilter;
+    private final SecurityFilter securityFilter;
 
 
     @Bean
@@ -31,13 +32,16 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Usuarios - criação a edição (implementar adm?)
-                        .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarServicos").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarProfissionais").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarServicosEProfissionais").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/auth/usuarios/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //disponibilidades
                         .requestMatchers(HttpMethod.GET, "/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
@@ -46,10 +50,25 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PUT, "/disponibilidades/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
 
                         //Agendamentos
-                        .requestMatchers(HttpMethod.GET, "/agendamentos/cliente/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/agendamentos/profissional/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/agendamentos/**/cancelar").hasAnyRole("PROFISSIONAL", "CLIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/agendamentos/**/concluir").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/cliente/**").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/agendamentos/profissional/**").hasRole("PROFISSIONAL")
+                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+                        //serviços
+                        .requestMatchers(HttpMethod.GET, "/auth/servicos").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/servicos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/auth/servicos").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/servicos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/auth/servicos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+
+                        //Disponibilidades
+                        .requestMatchers(HttpMethod.GET, "/auth/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/auth/disponibilidades/**").hasRole("PROFISSIONAL")
+                        .requestMatchers(HttpMethod.POST, "/auth/disponibilidades").hasRole("PROFISSIONAL")
+                        .requestMatchers(HttpMethod.PUT, "/auth/disponibilidades/**").hasRole("PROFISSIONAL")
+                        .requestMatchers(HttpMethod.DELETE, "/auth/disponibilidades/**").hasRole("PROFISSIONAL")
 
                         .anyRequest().authenticated()
                 )

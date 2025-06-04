@@ -11,12 +11,8 @@ import java.util.List;
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
 
     List<Agendamento> findByCliente_Id(Long clienteId);
-
     List<Agendamento> findByProfissional_Id(Long profissionalId);
 
-    List<Agendamento> findByProfissional_IdAndDataHoraInicioBetween(
-            Long profissionalId, LocalDateTime dataInicio, LocalDateTime dataFim);
-
     boolean existsByProfissional_IdAndDataHoraInicioLessThanAndDataHoraFimGreaterThan(
-            Long profissionalId, LocalDateTime dataHoraFim, LocalDateTime dataHoraInicio);
+        Long profissionalId, LocalDateTime dataHoraFim, LocalDateTime dataHoraInicio);
 }

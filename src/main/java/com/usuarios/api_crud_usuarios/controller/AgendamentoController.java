@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/agendamentos")
+@RequestMapping("/auth/agendamentos")
 public class AgendamentoController {
 
     @Autowired
