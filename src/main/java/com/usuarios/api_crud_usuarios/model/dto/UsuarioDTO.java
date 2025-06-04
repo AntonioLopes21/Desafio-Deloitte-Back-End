@@ -1,5 +1,7 @@
 package com.usuarios.api_crud_usuarios.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
@@ -15,6 +17,8 @@ public class UsuarioDTO {
     private Long id;
     private String nome;
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
     private TipoUsuario tipoUsuario;
 
@@ -23,7 +27,6 @@ public class UsuarioDTO {
         this.setId(usuario.getId());
         this.setNome(usuario.getNome());
         this.setEmail(usuario.getEmail());
-        this.setSenha(usuario.getSenha());
         this.setTipoUsuario(usuario.getTipoUsuario());
 
     }
