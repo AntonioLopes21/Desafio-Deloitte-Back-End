@@ -3,6 +3,7 @@ package com.usuarios.api_crud_usuarios.controller;
 import com.usuarios.api_crud_usuarios.model.dto.ProfissionaisEServicosDisponiveisDTO;
 import com.usuarios.api_crud_usuarios.model.dto.ServicoDTO;
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
+import com.usuarios.api_crud_usuarios.model.entity.Usuario;
 import com.usuarios.api_crud_usuarios.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,18 @@ import java.util.Optional;
 @RequestMapping("/auth/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UsuarioDTO> registrar(@RequestBody UsuarioDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.registrarUsuario(dto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioDTO> login(@RequestBody UsuarioDTO dto) {
+        Optional<UsuarioDTO> usuarioLogado = usuarioService.login(dto.getEmail(), dto.getSenha());
+        return usuarioLogado.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
 
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> listar() {

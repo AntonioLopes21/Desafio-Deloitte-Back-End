@@ -10,7 +10,6 @@ import com.usuarios.api_crud_usuarios.repository.AgendamentoRepository;
 import com.usuarios.api_crud_usuarios.repository.ServicoRepository;
 import com.usuarios.api_crud_usuarios.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +19,37 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
-    private final PasswordEncoder passwordEncoder;
 
     private final ServicoRepository servicoRepository;
 
     private final AgendamentoRepository agendamentoRepository;
 
     private final UsuarioRepository usuarioRepository;
+
+    public UsuarioDTO registrarUsuario(UsuarioDTO dto) {
+        if (usuarioRepository.existsByEmail((dto.getEmail()))) {
+            throw new RuntimeException("Usuário já existe");
+        }
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.getNome());
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+        usuario.setTipoUsuario(dto.getTipoUsuario());
+        usuarioRepository.save(usuario);
+        return UsuarioDTO.toDTO(usuario);
+    }
+
+    public Optional<UsuarioDTO> login(String email, String senha) {
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+        if (usuario.isPresent()) {
+            Usuario usuarioSenha = usuario.get();
+            if (senha.equals(usuarioSenha.getSenha())) {
+                return Optional.of(UsuarioDTO.toDTO(usuarioSenha));
+            }
+        }
+        return Optional.empty();
+    }
+
 
     //GET Servicos
     public List<ProfissionaisEServicosDisponiveisDTO> listarServicosEProfissionais() {
@@ -78,7 +101,7 @@ public class UsuarioService {
     //POST
     public UsuarioDTO criarUsuario(UsuarioDTO usuarioDTO) {
         Usuario novoUser = UsuarioDTO.toEntity(usuarioDTO);
-        novoUser.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
+        novoUser.setSenha(usuarioDTO.getSenha());
         Usuario usuarioSalvo = usuarioRepository.save(novoUser);
         return UsuarioDTO.toDTO(usuarioSalvo);
     }
@@ -92,7 +115,7 @@ public class UsuarioService {
 
             usuario.setNome(dto.getNome());
             usuario.setEmail(dto.getEmail());
-            usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
+            usuario.setSenha(dto.getSenha());
             usuario.setTipoUsuario(dto.getTipoUsuario());
 
             usuarioRepository.save(usuario);
