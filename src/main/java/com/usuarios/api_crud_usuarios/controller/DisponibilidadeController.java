@@ -2,11 +2,12 @@ package com.usuarios.api_crud_usuarios.controller;
 
 import com.usuarios.api_crud_usuarios.model.dto.DisponibilidadeDTO;
 import com.usuarios.api_crud_usuarios.model.entity.Disponibilidade;
+import com.usuarios.api_crud_usuarios.model.entity.Usuario;
 import com.usuarios.api_crud_usuarios.service.DisponibilidadeService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,17 +30,28 @@ public class DisponibilidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<DisponibilidadeDTO> definirDisponibilidade (@RequestBody @Valid DisponibilidadeDTO disponibilidadeDTO) {
+    public ResponseEntity<DisponibilidadeDTO> definirDisponibilidade (@RequestBody DisponibilidadeDTO disponibilidadeDTO, @AuthenticationPrincipal Usuario usuario) {
+        if(usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body(disponibilidadeService.definirDisponibilidade(disponibilidadeDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DisponibilidadeDTO> editarDisponibilidade (@PathVariable Long id, @RequestBody @Valid DisponibilidadeDTO disponibilidadeDTO) {
+    public ResponseEntity<DisponibilidadeDTO> editarDisponibilidade (@PathVariable Long id, @RequestBody DisponibilidadeDTO disponibilidadeDTO, @AuthenticationPrincipal Usuario usuario) {
+        if(usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(disponibilidadeService.atualizarDisponibilidade(disponibilidadeDTO, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirDisponibilidade (@PathVariable Long id) {
+    public ResponseEntity<Void> excluirDisponibilidade (@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) {
+        if(usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         disponibilidadeService.deletarDisponibilidade(id);
         return ResponseEntity.noContent().build();
     }

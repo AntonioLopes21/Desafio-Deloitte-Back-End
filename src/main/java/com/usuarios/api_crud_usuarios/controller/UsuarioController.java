@@ -3,11 +3,12 @@ package com.usuarios.api_crud_usuarios.controller;
 import com.usuarios.api_crud_usuarios.model.dto.ProfissionaisEServicosDisponiveisDTO;
 import com.usuarios.api_crud_usuarios.model.dto.ServicoDTO;
 import com.usuarios.api_crud_usuarios.model.dto.UsuarioDTO;
+import com.usuarios.api_crud_usuarios.model.entity.Usuario;
 import com.usuarios.api_crud_usuarios.service.UsuarioService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,12 @@ import java.util.Optional;
 @RequestMapping("/auth/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
+
+    @GetMapping("/UsuarioAutenticado")
+    public ResponseEntity<UsuarioDTO> meuUsuario(@AuthenticationPrincipal Usuario usuario) {
+        UsuarioDTO dto = UsuarioDTO.toDTO(usuario);
+        return ResponseEntity.ok(dto);
+    }
 
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> listar() {
@@ -58,14 +65,14 @@ public class UsuarioController {
         List<UsuarioDTO> profissionais = usuarioService.listarProfissionais()
                 .stream()
                 .map(profissional -> {
-                            UsuarioDTO dto = new UsuarioDTO();
-                            dto.setId(profissional.getId());
-                            dto.setNome(profissional.getNome());
-                            dto.setEmail(profissional.getEmail());
-                            dto.setTipoUsuario(profissional.getTipoUsuario());
-                            dto = UsuarioDTO.toDTO(profissional);
-                            return dto;
-                        })
+                    UsuarioDTO dto = new UsuarioDTO();
+                    dto.setId(profissional.getId());
+                    dto.setNome(profissional.getNome());
+                    dto.setEmail(profissional.getEmail());
+                    dto.setTipoUsuario(profissional.getTipoUsuario());
+                    dto = UsuarioDTO.toDTO(profissional);
+                    return dto;
+                })
                 .toList();
         return ResponseEntity.status(HttpStatus.OK).body(profissionais);
     }
@@ -77,18 +84,29 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> criar(@RequestBody UsuarioDTO dto, @AuthenticationPrincipal Usuario usuario) {
+        if(usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.criarUsuario(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> editar(@PathVariable Long id,@RequestBody @Valid UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> editar(@PathVariable Long id,@RequestBody UsuarioDTO dto, @AuthenticationPrincipal Usuario usuario) {
+        if(usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.editarUsuario(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) {
+        if(usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         usuarioService.excluirUsuario(id);
         return ResponseEntity.noContent().build();
     }

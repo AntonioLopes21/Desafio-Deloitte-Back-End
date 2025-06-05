@@ -48,11 +48,49 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .anyRequest().permitAll()
+                .authorizeHttpRequests(
+                        auth -> auth
+                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                                //GETTERS CLIENTE - FREE
+                                .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarServicos").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarProfissionais").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/auth/usuarios/cliente/listarServicosEProfissionais").permitAll()
+
+                                .requestMatchers(HttpMethod.GET, "/auth/usuarios/UsuarioAutenticado").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/auth/usuarios/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/auth/usuarios").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/auth/usuarios/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/auth/usuarios/**").authenticated()
+
+
+                                //GETTERS SERVICOS - FREE
+                                .requestMatchers(HttpMethod.GET, "/auth/servicos").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/auth/servicos/**").permitAll()
+
+
+                                .requestMatchers(HttpMethod.POST, "/auth/servicos").hasRole("PROFISSIONAL")
+                                .requestMatchers(HttpMethod.PUT, "/auth/servicos/**").hasRole("PROFISSIONAL")
+                                .requestMatchers(HttpMethod.DELETE, "/auth/servicos/**").hasRole("PROFISSIONAL")
+
+                                //GETTERS AGENDAMENTOS - (TODOS COM PERMISSÃO)
+                                .requestMatchers(HttpMethod.GET, "/auth/agendamentos/cliente/**").hasRole("CLIENTE")
+                                .requestMatchers(HttpMethod.GET, "/auth/agendamentos/profissional/**").hasRole("PROFISSIONAL")
+                                .requestMatchers(HttpMethod.POST, "/auth/agendamentos").hasRole("PROFISSIONAL")
+                                .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                                .requestMatchers(HttpMethod.PUT, "/auth/agendamentos/**").hasAnyRole("PROFISSIONAL", "CLIENTE")
+
+                                //DISPONIBILIDADES
+                                .requestMatchers(HttpMethod.GET, "/auth/disponibilidades").hasAnyRole("PROFISSIONAL", "CLIENTE")
+                                .requestMatchers(HttpMethod.GET, "/auth/disponibilidades/**").hasRole("PROFISSIONAL")
+
+                                .requestMatchers(HttpMethod.POST, "/auth/disponibilidades").hasRole("PROFISSIONAL")
+                                .requestMatchers(HttpMethod.PUT, "/auth/disponibilidades/**").hasRole("PROFISSIONAL")
+                                .requestMatchers(HttpMethod.DELETE, "/auth/disponibilidades/**").hasRole("PROFISSIONAL")
+                                .anyRequest().permitAll()
+
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -61,7 +99,7 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200/"));
+        config.setAllowedOrigins(List.of("http://localhost:4200"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
