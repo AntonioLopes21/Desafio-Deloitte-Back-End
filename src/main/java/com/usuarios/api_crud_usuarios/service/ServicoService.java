@@ -67,7 +67,11 @@ public class ServicoService {
         servico.setNome(servicoDTO.getNome());
         servico.setDescricao(servicoDTO.getDescricao());
         servico.setDuracaoEmMinutos(servicoDTO.getDuracaoEmMinutos());
-        servico.setProfissional(servicoDTO.getProfissional());
+        Long idProfissional = servicoDTO.getProfissional().getId();
+        Usuario profissional = usuarioRepository.findById(idProfissional)
+                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+        servico.setProfissional(profissional);
+
         Servico servicoSalvo = servicoRepository.save(servico);
         return new ServicoDTO(servicoSalvo);
     }

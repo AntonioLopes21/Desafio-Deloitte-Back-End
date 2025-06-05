@@ -1,7 +1,11 @@
 package com.usuarios.api_crud_usuarios.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.usuarios.api_crud_usuarios.enums.TipoUsuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,41 +20,30 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties({"password", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked", "authorities", "username"})
 public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
+    @NotBlank (message = "O nome não pode ser vazio.")
     private String nome;
+    @Email (message = "email inválido")
+    @NotBlank (message = "O email não pode ser vazio.")
     private String email;
+    @JsonIgnore
     private String senha;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
-    public Usuario(Long id, String email, String senha, TipoUsuario tipoUsuario) {
-        this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.tipoUsuario = tipoUsuario;
-    }
-
-    public Usuario(Long id, String nome, String email, String encryptedPassword, TipoUsuario role) {
+    public Usuario(Long id,String nome, String email, String senha, TipoUsuario role) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.senha = encryptedPassword;
+        this.senha = senha;
         this.tipoUsuario = role;
     }
-
-    public Usuario(String email, String encryptedPassword, TipoUsuario role) {
-        this.email = email;
-        this.senha = encryptedPassword;
-        this.tipoUsuario = role;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

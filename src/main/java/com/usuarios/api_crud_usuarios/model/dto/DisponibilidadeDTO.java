@@ -3,6 +3,7 @@ package com.usuarios.api_crud_usuarios.model.dto;
 import com.usuarios.api_crud_usuarios.enums.DiaDaSemana;
 import com.usuarios.api_crud_usuarios.model.entity.Disponibilidade;
 import com.usuarios.api_crud_usuarios.model.entity.Usuario;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
@@ -17,7 +19,7 @@ import java.time.LocalTime;
 public class DisponibilidadeDTO {
     private Long id;
     private Usuario profissional;
-    private DiaDaSemana diaDaSemana;
+    private List<DiaDaSemana> diaDaSemana;
     private LocalTime horaInicio;
     private LocalTime horaFim;
 
