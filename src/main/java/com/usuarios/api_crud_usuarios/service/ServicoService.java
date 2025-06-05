@@ -26,7 +26,7 @@ public class ServicoService {
 
     //Get
     public List<ServicoDTO> listarServico() {
-        List<Servico> servicos = servicoRepository.findByProfissionalTipoUsuario(TipoUsuario.ROLE_PROFISSIONAL);
+        List<Servico> servicos = servicoRepository.findByProfissionalTipoUsuario(TipoUsuario.PROFISSIONAL);
             List<ServicoDTO> servicoDTO = servicos.stream()
                     .map(ServicoDTO::new)
                     .collect(Collectors.toList());
@@ -35,7 +35,7 @@ public class ServicoService {
 
     //Get by id
     public ServicoDTO verificarServico( Long id) {
-            Optional<Servico> servico = servicoRepository.findByIdAndProfissionalTipoUsuario(id, TipoUsuario.ROLE_PROFISSIONAL);
+            Optional<Servico> servico = servicoRepository.findByIdAndProfissionalTipoUsuario(id, TipoUsuario.PROFISSIONAL);
             if (servico.isEmpty()) {
                 throw new RuntimeException("Serviço não encontrado ou não pertence a um profissional.");
             }
@@ -86,7 +86,7 @@ public class ServicoService {
     }
 
     private void validarSeProfissional(Usuario usuario) {
-        if (usuario == null || usuario.getTipoUsuario() != TipoUsuario.ROLE_PROFISSIONAL) {
+        if (usuario == null || usuario.getTipoUsuario() != TipoUsuario.PROFISSIONAL) {
             throw new RuntimeException("Usuário não é um profissional.");
         }
     }

@@ -1,8 +1,8 @@
 package com.usuarios.api_crud_usuarios.enums;
 
 public enum TipoUsuario {
-    ROLE_CLIENTE ("CLIENTE"),
-    ROLE_PROFISSIONAL ("PROFISSIONAL");
+    CLIENTE ("CLIENTE"),
+    PROFISSIONAL ("PROFISSIONAL");
 
     private String role;
 

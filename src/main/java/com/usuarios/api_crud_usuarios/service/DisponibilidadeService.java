@@ -74,7 +74,7 @@ public class DisponibilidadeService {
     }
 
     private void validarSeProfissional(Usuario usuario) {
-        if (usuario == null || usuario.getTipoUsuario() != TipoUsuario.ROLE_PROFISSIONAL) {
+        if (usuario == null || usuario.getTipoUsuario() != TipoUsuario.PROFISSIONAL) {
             throw new RuntimeException("Usuário não é um profissional.");
         }
     }

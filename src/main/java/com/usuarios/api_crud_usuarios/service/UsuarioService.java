@@ -51,7 +51,7 @@ public class UsuarioService {
     }
     //GET PROFISSIONAIS
     public List<Usuario> listarProfissionais() {
-        return usuarioRepository.findByTipoUsuario(TipoUsuario.ROLE_PROFISSIONAL);
+        return usuarioRepository.findByTipoUsuario(TipoUsuario.PROFISSIONAL);
 
     }
 
